@@ -12,6 +12,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    npm install
                     ls -la
                     node --version
                     npm --version
@@ -30,10 +31,9 @@ pipeline {
                             reuseNode true
                         }
                     }
-
                     steps {
                         sh '''
-                            #test -f build/index.html
+                            npm install
                             npm test
                         '''
                     }
@@ -51,16 +51,18 @@ pipeline {
                             reuseNode true
                         }
                     }
-
                     steps {
                         sh '''
                             npm install serve
                             node_modules/.bin/serve -s build &
+
+                            SERVER_PID=$!
                             sleep 10
-                            npx playwright test  --reporter=html
+                            npx playwright test --reporter=html
+
+                            kill $SERVER_PID
                         '''
                     }
-
                     post {
                         always {
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
@@ -79,7 +81,9 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli
+                    if [ ! -d "node_modules" ]; then
+                        npm install
+                    fi
                     node_modules/.bin/netlify --version
                 '''
             }
