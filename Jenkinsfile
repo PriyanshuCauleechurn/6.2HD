@@ -39,7 +39,7 @@ pipeline {
                     }
                     post {
                         always {
-                            junit 'test-results/junit.xml'
+                            junit 'jest-results/junit.xml'
                         }
                     }
                 }
@@ -57,7 +57,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install -g netlify-cli --unsafe-perm
+                    npm config set cache /tmp/.npm --global
                     node_modules/.bin/netlify --version
                 '''
             }
