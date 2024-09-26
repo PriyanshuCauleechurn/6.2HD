@@ -57,7 +57,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm config set cache /tmp/.npm --global
+                    sudo npm install netlify-cli
                     node_modules/.bin/netlify --version
                 '''
             }
