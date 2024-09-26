@@ -58,7 +58,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    sudo npm install netlify-cli
+                    npm install netlify-cli
                     node_modules/.bin/netlify --version
                 '''
             }
