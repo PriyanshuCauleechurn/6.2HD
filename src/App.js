@@ -12,7 +12,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Build, Test and Deploy on Jenkins
+          Build, Test and Deploy and learn Jenkins
           SIT 223 Task 6.2HD
         </a>
       </header>
