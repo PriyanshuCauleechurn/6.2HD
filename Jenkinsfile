@@ -12,7 +12,6 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install
                     ls -la
                     node --version
                     npm --version
@@ -31,9 +30,10 @@ pipeline {
                             reuseNode true
                         }
                     }
+
                     steps {
                         sh '''
-                            npm install
+                            #test -f build/index.html
                             npm test
                         '''
                     }
@@ -51,21 +51,19 @@ pipeline {
                             reuseNode true
                         }
                     }
+
                     steps {
                         sh '''
                             npm install serve
                             node_modules/.bin/serve -s build &
-
-                            SERVER_PID=$!
                             sleep 10
-                            npx playwright test --reporter=html
-
-                            kill $SERVER_PID
+                            npx playwright test  --reporter=html
                         '''
                     }
+
                     post {
                         always {
-                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                            publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
                 }
@@ -81,9 +79,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    if [ ! -d "node_modules" ]; then
-                        npm install
-                    fi
+                    npm install netlify-cli
                     node_modules/.bin/netlify --version
                 '''
             }
