@@ -57,7 +57,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli -g
+                    npm install -g netlify-cli --unsafe-perm
                     node_modules/.bin/netlify --version
                 '''
             }
